@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p \"$CLAUDE_PROJECT_DIR/notes\" && date -u > \"$CLAUDE_PROJECT_DIR/notes/hook-ran.txt\""
+          }
+        ]
+      }
+    ]
+  }
+}

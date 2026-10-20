@@ -1,0 +1,1 @@
+run_id,date_utc,claude_code_version,plan,model,effort,variant,task,trial,claimed_done,grade,gate_blocks,gate_failed_marker,tokens,wall_min

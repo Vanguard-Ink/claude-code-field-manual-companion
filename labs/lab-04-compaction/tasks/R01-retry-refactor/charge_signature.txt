@@ -1,0 +1,1 @@
+(gateway: ledgerline_billing.gateway.FakeGateway, customer_id: str, amount_cents: int, *, idempotency_key: str, sleep: collections.abc.Callable[[float], None] = <built-in function sleep>) -> ledgerline_billing.charge.ChargeResult

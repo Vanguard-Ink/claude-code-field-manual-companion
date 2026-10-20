@@ -1,0 +1,5 @@
+tests/acceptance/
+migrations/
+.github/
+clients/generated/
+vendor/

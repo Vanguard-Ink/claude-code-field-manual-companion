@@ -1,0 +1,6 @@
+tests/acceptance/
+migrations/
+.github/
+clients/generated/
+vendor/
+packages/reports/ledgerline_reports/service.py

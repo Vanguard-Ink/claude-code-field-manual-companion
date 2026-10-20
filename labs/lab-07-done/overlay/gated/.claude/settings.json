@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(./tests/acceptance/**)",
+      "Edit(./.github/**)",
+      "Edit(./labs/**/grade.sh)",
+      "Edit(./.claude/hooks/**)",
+      "Edit(./.claude/settings.json)",
+      "Edit(./.claude/dod-base)"
+    ]
+  },
+  "hooks": {
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command":
+          "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/dod-gate.sh"
+      }]
+    }],
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command":
+          "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-edit.sh"
+      }]
+    }]
+  }
+}

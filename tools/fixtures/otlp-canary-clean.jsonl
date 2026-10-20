@@ -1,0 +1,1 @@
+{"path": "/v1/metrics", "body": {"resourceMetrics": [{"scopeMetrics": [{"metrics": [{"name": "claude_code.cost.usage"}]}]}]}}

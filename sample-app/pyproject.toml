@@ -1,0 +1,36 @@
+# Ledgerline — sample service for the Claude Code Field Manual labs.
+# Fictional. Tool configuration only; dependencies are in requirements*.txt.
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "packages/shared", "packages/billing", "packages/reports",
+  "packages/web", "packages/legacy-pay",
+  "clients/generated", "vendor/sdk",
+]
+testpaths = ["packages", "tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = ["clients/generated", "vendor"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "packages/shared:packages/billing:packages/reports:packages/web"
+explicit_package_bases = true
+disallow_untyped_defs = true
+warn_unused_ignores = true
+packages = [
+  "ledgerline_shared", "ledgerline_billing",
+  "ledgerline_reports", "ledgerline_web",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+  "ledgerline_shared", "ledgerline_billing", "ledgerline_reports",
+  "ledgerline_web", "ledgerline_legacy_pay",
+]

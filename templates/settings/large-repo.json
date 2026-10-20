@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./**/generated/**/*)",
+      "Read(./**/vendor/**/*)",
+      "Read(./**/*.generated.*)"
+    ]
+  },
+  "worktree": {
+    "sparsePaths": [
+      ".claude", "packages/billing", "packages/shared"
+    ],
+    "symlinkDirectories": ["node_modules"]
+  }
+}

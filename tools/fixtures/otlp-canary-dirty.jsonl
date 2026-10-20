@@ -1,0 +1,3 @@
+{"path": "/v1/logs", "body": {"resourceLogs": [{"scopeLogs": [{"logRecords": [{"attributes": [{"key": "event.name", "value": {"stringValue": "user_prompt"}}, {"key": "prompt", "value": {"stringValue": "CANARY-7f3a fix it"}}, {"key": "prompt_length", "value": {"stringValue": "12"}}]}]}]}]}}
+{"path": "/v1/traces", "body": {"resourceSpans": [{"scopeSpans": [{"spans": [{"name": "claude_code.interaction", "attributes": [{"key": "user_prompt", "value": {"stringValue": "x CANARY-7f3a"}}], "events": [{"name": "tool.output", "attributes": [{"key": "content", "value": {"stringValue": "secret CANARY-7f3a"}}]}]}]}]}]}}
+{"path": "/v1/metrics", "body": {"resourceMetrics": [{"scopeMetrics": [{"metrics": [{"name": "claude_code.cost.usage"}]}]}]}}

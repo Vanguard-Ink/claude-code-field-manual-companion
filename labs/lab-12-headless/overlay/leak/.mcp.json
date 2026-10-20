@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "team-metrics": {
+      "command": "ccfm-no-such-server",
+      "args": []
+    }
+  }
+}

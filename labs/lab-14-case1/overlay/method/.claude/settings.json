@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./roundup/cgi/TAL/**)",
+      "Read(./roundup/cgi/PageTemplates/**)",
+      "Read(./roundup/cgi/ZTUtils/**)",
+      "Read(./roundup/anypy/vendored/**)",
+      "Edit(./share/**)",
+      "Edit(./test/test_templating.py)",
+      "Edit(./test/test_cgi.py)",
+      "Edit(./test/conftest.py)",
+      "Edit(./roundup/cgi/TAL/**)",
+      "Edit(./roundup/cgi/PageTemplates/**)",
+      "Edit(./roundup/cgi/ZTUtils/**)",
+      "Edit(./roundup/anypy/**)",
+      "Edit(./roundup/backends/**)",
+      "Edit(./roundup/test/**)",
+      "Edit(./pyproject.toml)",
+      "Edit(./.github/**)",
+      "Edit(./.claude/**)",
+      "Edit(./notes/dod-status.txt)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 900,
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/dod-gate-case1.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat \"$CLAUDE_PROJECT_DIR\"/notes/handoff.md"
+          }
+        ]
+      }
+    ]
+  }
+}

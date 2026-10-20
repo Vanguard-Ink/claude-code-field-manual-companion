@@ -1,0 +1,1 @@
+run_id,date_utc,claude_code_version,plan,model,effort,variant,task,context_at_start_tokens,files_read,grade_or_score,fees_coverage_pct

@@ -1,0 +1,120 @@
+diff --git a/CHANGES.txt b/CHANGES.txt
+index 1d18dedd..82fcea03 100644
+--- a/CHANGES.txt
++++ b/CHANGES.txt
+@@ -65,6 +65,10 @@ Fixed:
+ 
+ Features:
+ 
++- issue2551121 - add show_nosel=True to the menu() methods of Link and
++  Multilink properties; show_nosel=False leaves out the "- no
++  selection -" option. (Case 1 reference)
++
+ - issue2550930 - add support for local_replace to classic
+   template. Created placeholder implementation for
+   utils.local_replace() and add call to classic template. Change devel
+diff --git a/roundup/cgi/templating.py b/roundup/cgi/templating.py
+index 574c0fee..f39166af 100644
+--- a/roundup/cgi/templating.py
++++ b/roundup/cgi/templating.py
+@@ -2568,7 +2568,8 @@ class LinkHTMLProperty(HTMLProperty):
+                           **kwargs)
+ 
+     def menu(self, size=None, height=None, showid=0, additional=[], value=None,
+-             sort_on=None, html_kwargs={}, translate=True, showdef=None, **conditions):
++             sort_on=None, html_kwargs={}, translate=True, showdef=None,
++             show_nosel=True, **conditions):
+         """ Render a form select list for this property
+ 
+             "size" is used to limit the length of the list labels
+@@ -2592,6 +2593,10 @@ class LinkHTMLProperty(HTMLProperty):
+                 Note that the marker may be removed if the length of
+                 the option label and the marker exceed the size.
+ 
++            "show_nosel" includes the "- no selection -" option when
++                true (the default). Set it to False to leave the option
++                out, so the user has to pick a value.
++
+             The remaining keyword arguments are used as conditions for
+             filtering the items in the list - they're passed as the
+             "filterspec" argument to a Class.filter() call.
+@@ -2617,8 +2622,9 @@ class LinkHTMLProperty(HTMLProperty):
+         s = ''
+         if value is None:
+             s = 'selected="selected" '
+-        html.append(self._(
+-            '<option %svalue="-1">- no selection -</option>') % s)
++        if show_nosel:
++            html.append(self._(
++                '<option %svalue="-1">- no selection -</option>') % s)
+ 
+         if sort_on is not None:
+             if not isinstance(sort_on, tuple):
+@@ -2889,6 +2895,9 @@ class MultilinkHTMLProperty(HTMLProperty):
+                 (direction, property) where direction is '+' or '-'. A
+                 single string with the direction prepended may be used.
+                 For example: ('-', 'order'), '+name'.
++            "show_nosel" includes the "- no selection -" option when
++                true (the default). Set it to False to leave the option
++                out; it then no longer counts toward the height.
+ 
+             The remaining keyword arguments are used as conditions for
+             filtering the items in the list - they're passed as the
+diff --git a/test/test_templating_menu.py b/test/test_templating_menu.py
+new file mode 100644
+index 00000000..860eacc8
+--- /dev/null
++++ b/test/test_templating_menu.py
+@@ -0,0 +1,52 @@
++"""Characterization and feature tests for the menu() renderers."""
++import unittest
++
++from roundup import hyperdb
++from roundup.anypy.cgi_ import FieldStorage
++from roundup.cgi.templating import HTMLItem
++from roundup.test import memorydb
++from roundup.test.mocknull import MockNull
++
++
++class MenuTest(unittest.TestCase):
++    def setUp(self):
++        self.client = c = MockNull()
++        c.db = db = memorydb.create('admin')
++        db.tx_Source = "web"
++        db.issue.addprop(tx_Source=hyperdb.String())
++        db.security.hasPermission = lambda *a, **k: True
++        c.form = FieldStorage()
++        c._props = MockNull()
++        c.session_api = MockNull(_sid="1")
++        db.getuid = lambda: 10
++        self.k1 = db.keyword.create(name="ui")
++        self.k2 = db.keyword.create(name="db")
++        self.i1 = db.issue.create(title="one", status="5",
++                                  keyword=[self.k1])
++
++    def tearDown(self):
++        self.client.db.close()
++        memorydb.db_nuke('')
++
++    def p(self, name):
++        return HTMLItem(self.client, 'issue', self.i1)[name]
++
++    def test_link_menu_default_has_no_selection(self):
++        html = self.p('status').menu()
++        self.assertIn('<option value="-1">- no selection -</option>', html)
++        self.assertIn('<option selected="selected" value="5">in-progress',
++                      html)
++
++    def test_multilink_menu_default_has_no_selection(self):
++        html = self.p('keyword').menu()
++        self.assertIn('size="3"', html)
++        self.assertIn('- no selection -', html)
++
++    def test_link_menu_show_nosel_false(self):
++        html = self.p('status').menu(show_nosel=False)
++        self.assertNotIn('- no selection -', html)
++
++    def test_multilink_menu_show_nosel_false(self):
++        html = self.p('keyword').menu(show_nosel=False)
++        self.assertNotIn('- no selection -', html)
++        self.assertIn('size="2"', html)

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./**/generated/**/*)",
+      "Read(./**/vendor/**/*)",
+      "Read(./**/*.generated.*)"
+    ]
+  },
+  "claudeMdExcludes": [
+    "**/packages/legacy-*/**"
+  ]
+}

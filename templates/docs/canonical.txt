@@ -1,0 +1,7 @@
+# Canonical helpers for dupcheck.py, one per line:
+# pattern<TAB>reuse this instead<TAB>file where the pattern is allowed
+# Patterns are Python regexes matched against added lines only.
+\.quantize\(	ledgerline_shared.money.round_money	packages/shared/ledgerline_shared/money.py
+\*\s*100\b|\b100\s*\*	ledgerline_shared.money.to_cents	packages/shared/ledgerline_shared/money.py
+time\.sleep\(|for attempt in|while .*attempt	ledgerline_billing.retry_helper.with_retries	packages/billing/ledgerline_billing/retry_helper.py
+os\.environ|os\.getenv	ledgerline_shared.settings.load_settings	packages/shared/ledgerline_shared/settings.py
